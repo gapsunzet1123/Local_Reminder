@@ -1,0 +1,152 @@
+/* ใช้ Google Fonts เพื่อความสวยงาม */
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Sarabun', sans-serif;
+}
+
+/* Style สำหรับ highlight คำค้นหา */
+.highlight {
+    background-color: #fde047;
+    /* Tailwind yellow-300 */
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+/* ซ่อน scrollbar แต่ยัง scroll ได้ */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .06);
+    color: #e5e7eb;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+}
+
+.topbar .title {
+    font-weight: 800
+}
+
+.search {
+    flex: 1;
+    max-width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #6b7280;
+    box-shadow: var(--shadow);
+}
+
+.search input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    font-size: 14px
+}
+
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    font-weight: 700;
+    text-decoration: none
+}
+
+.btn.primary {
+    background: rgba(176, 212, 243, 0.25);
+    color: #fff
+}
+
+.btn.primary:hover {
+    background: var(--primary-600)
+}
+
+.btn.ghost {
+    color: var(--primary);
+    background: rgba(30, 136, 229, .25);
+    border-color: rgba(30, 136, 229, .25)
+}
+
+.btn.group:hover .group-hover\:flex {
+    display: flex;
+}
+
+/* เพิ่มสไตล์สำหรับไอคอนควบคุมลิงก์ */
+.link-control-btn {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    /* ทำให้เป็นวงกลม */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transform: translate(50%, -50%);
+    /* จัดตำแหน่งคร่อมมุมขวาบน */
+    transition: transform 0.2s ease;
+}
+
+.link-control-btn:hover {
+    transform: translate(50%, -50%) scale(1.1);
+    /* ขยายเล็กน้อยเมื่อ hover */
+}
+
+.edit-link-btn {
+    background-color: #3b82f6;
+    /* สีน้ำเงิน */
+}
+
+.delete-link-btn {
+    background-color: #ef4444;
+    /* สีแดง */
+    margin-left: -4px;
+    /* ทำให้ปุ่มซ้อนกันเล็กน้อย */
+}
+
+.whitespace-pre-wrap {
+    white-space: pre-wrap;
+    /* CSS standard */
+    word-wrap: break-word;
+    /* For older browsers */
+}
+
+/* Style for article timestamp */
+.article-timestamp {
+    margin-top: -0.25rem;
+    /* ทำให้ข้อความเวลาขยับเข้าใกล้หัวข้อมากขึ้น */
+}
+
+.hero {
+    background: linear-gradient(120deg, var(--panel) 0%, #0f1a33 50%, #0b1426 100%);
+    color: #E8EFFA;
+    border: 1px solid rgba(255, 255, 255, .06);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+}
+
+.hero h1 {
+    margin: 0 0 6px 0
+}
+
+.hero .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px
+}

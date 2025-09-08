@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Knowledge Base</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="bg-gray-800 text-gray-200">
+
+    <div class="container mx-auto p-4 md:p-6">
+        <!-- Header -->
+        <header class="bg-gray-700 rounded-lg p-4 shadow-lg mb-6">
+            <div class="flex flex-col gap-4">
+                <!-- Top Row -->
+                <div class="flex items-center justify-between gap-4">
+                    <!-- Left: Title -->
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-bold text-white">Knowledge Base</h1>
+                    </div>
+
+                    <!-- Center: Search Box -->
+                    <div class="relative flex-grow max-w-xl mx-auto">
+                        <input type="search" id="search-box" placeholder="ค้นหาในบทความ..."
+                            class="w-full bg-gray-600 border border-gray-500 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+
+                    <!-- Right: New Article Button -->
+                    <div class="flex-shrink-0">
+                        <button id="add-new-article-btn"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 whitespace-nowrap">
+                            สร้างบทความใหม่
+                        </button>
+                    </div>
+                </div>
+                <div id="link-modal"
+                    class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+                    <div class="bg-gray-700 rounded-lg shadow-xl w-full max-w-lg">
+                        <div class="p-4 border-b border-gray-600">
+                            <h2 id="link-modal-title" class="text-xl font-bold text-white">เพิ่ม/แก้ไข ลิงก์ด่วน</h2>
+                        </div>
+                        <div class="p-6">
+                            <form id="link-form">
+                                <input type="hidden" id="link-id">
+                                <div class="mb-4">
+                                    <label for="link-text"
+                                        class="block text-gray-300 text-sm font-bold mb-2">ข้อความที่แสดง:</label>
+                                    <input type="text" id="link-text"
+                                        class="w-full bg-gray-600 border border-gray-500 rounded-lg py-2 px-3 text-white"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="link-href" class="block text-gray-300 text-sm font-bold mb-2">ลิงก์ หรือ
+                                        Path:</label>
+                                    <input type="text" id="link-href"
+                                        class="w-full bg-gray-600 border border-gray-500 rounded-lg py-2 px-3 text-white"
+                                        required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="p-4 border-t border-gray-600 flex justify-end gap-3">
+                            <button id="link-cancel-btn" type="button"
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">ยกเลิก</button>
+                            <button id="link-save-btn" type="submit" form="link-form"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">บันทึก</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bottom Row -->
+                <div class="flex flex-wrap items-center gap-4 border-t border-gray-600 pt-4">
+                    <div class="flex flex-wrap items-center gap-2 flex-grow" id="quick-links-container">
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button id="backup-btn"
+                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">สำรองข้อมูล</button>
+                        <label for="restore-input"
+                            class="cursor-pointer bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">กู้ข้อมูล</label>
+                        <input type="file" id="restore-input" class="hidden" accept=".json">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Container -->
+        <main id="articles-container" class="space-y-4">
+            <!-- บทความจะถูกแสดงที่นี่โดย JavaScript -->
+        </main>
+    </div>
+
+    <div id="read-article-modal"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-700 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b border-gray-600 flex justify-between items-center flex-shrink-0">
+                <h2 id="read-modal-title" class="text-xl font-bold text-white"></h2>
+                <button id="read-modal-close-btn"
+                    class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div id="read-modal-content"
+                class="p-6 flex-grow overflow-y-auto no-scrollbar text-gray-200 leading-relaxed whitespace-pre-wrap">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Article -->
+    <div id="article-modal"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-700 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b border-gray-600">
+                <h2 id="modal-title" class="text-xl font-bold text-white">สร้าง/แก้ไขบทความ</h2>
+            </div>
+            <div class="p-6 flex-grow overflow-y-auto no-scrollbar">
+                <form id="article-form">
+                    <input type="hidden" id="article-id">
+                    <div class="mb-4">
+                        <label for="article-title" class="block text-gray-300 text-sm font-bold mb-2">หัวข้อ:</label>
+                        <input type="text" id="article-title"
+                            class="w-full bg-gray-600 border border-gray-500 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+                    <div>
+                        <label for="article-content" class="block text-gray-300 text-sm font-bold mb-2">เนื้อหา:</label>
+                        <p class="text-xs text-gray-400 mb-2">Tip: ใช้ `fronthub:your/path` หรือ `fronthub:"path with
+                            spaces"` หากมีช่องว่าง</p>
+                        <textarea id="article-content" rows="15"
+                            class="w-full bg-gray-600 border border-gray-500 rounded-lg py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="p-4 border-t border-gray-600 flex justify-end gap-3">
+                <button id="cancel-btn" type="button"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">ยกเลิก</button>
+                <button id="save-btn" type="submit" form="article-form"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Confirm Modal -->
+    <div id="confirm-modal"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-700 rounded-lg shadow-xl w-full max-w-sm">
+            <div class="p-6 text-center">
+                <p id="confirm-message" class="text-white mb-6"></p>
+                <div class="flex justify-center gap-4">
+                    <button id="confirm-cancel"
+                        class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">ยกเลิก</button>
+                    <button id="confirm-ok"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification"
+        class="fixed bottom-5 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg transition-opacity duration-300 opacity-0 z-50 pointer-events-none">
+        <!-- Message will be inserted here -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
